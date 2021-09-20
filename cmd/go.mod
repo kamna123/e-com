@@ -1,4 +1,4 @@
-module github.com/kamna123/e-commerce
+module e-commerce/cmd
 
 go 1.17
 

@@ -1,9 +1,11 @@
 package main
 
 import (
-	"e-commerce/cmd/app"
+	"e-commerce/cmd/app/container"
+	"fmt"
 )
 
 func main() {
-	container := app.BuildContainer()
+	container := container.BuildContainer()
+	fmt.Print(container)
 }

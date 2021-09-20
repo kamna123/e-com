@@ -10,8 +10,8 @@ import (
 
 type IUserService interface {
 	Login(ctx context.Context, item *schema.Login) (*models.User, string, error)
-	Register(ctx context.Context, item *schema.Register) (*models.User, string, error)
-	GetUserByID(ctx context.Context, uuid string) (*models.User, error)
+	// Register(ctx context.Context, item *schema.Register) (*models.User, string, error)
+	// GetUserByID(ctx context.Context, uuid string) (*models.User, error)
 }
 type user struct {
 	repo repositories.UserRepository
@@ -19,4 +19,14 @@ type user struct {
 
 func NewUserService(repo repositories.UserRepository) IUserService {
 	return &user{repo: repo}
+}
+
+func (u *user) Login(ctx context.Context, item *schema.Login) (*models.User, string, error) {
+	user, err := u.repo.Login(item)
+	if err != nil {
+		return nil, "", err
+	}
+
+	//token := jwtMiddle.GenerateToken(user)
+	return user, "", nil
 }

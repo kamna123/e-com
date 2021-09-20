@@ -7,7 +7,7 @@ import (
 
 	"github.com/jinzhu/gorm"
 
-	"goshop/config"
+	"e-commerce/cmd/config"
 )
 
 var Database *gorm.DB

@@ -16,7 +16,7 @@ func BuildContainer() *dig.Container {
 	if err != nil {
 		log.Fatal("Failed to inject repositories", err)
 	}
-	err := services.Inject(container)
+	err = services.Inject(container)
 	if err != nil {
 		log.Fatal("Failed to inject services", err)
 	}
