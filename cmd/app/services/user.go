@@ -4,6 +4,8 @@ import (
 	"context"
 	"e-commerce/cmd/app/models"
 	"e-commerce/cmd/app/schema"
+
+	"e-commerce/cmd/app/repositories"
 )
 
 type IUserService interface {
@@ -13,4 +15,8 @@ type IUserService interface {
 }
 type user struct {
 	repo repositories.UserRepository
+}
+
+func NewUserService(repo repositories.UserRepository) IUserService {
+	return &user{repo: repo}
 }
