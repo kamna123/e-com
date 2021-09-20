@@ -11,3 +11,6 @@ type IUserService interface {
 	Register(ctx context.Context, item *schema.Register) (*models.User, string, error)
 	GetUserByID(ctx context.Context, uuid string) (*models.User, error)
 }
+type user struct {
+	repo repositories.UserRepository
+}
