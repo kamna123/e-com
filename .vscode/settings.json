@@ -1,0 +1,7 @@
+{
+    "go.gopath": "/Users/kamnagarg/Go",
+    "gopls": {
+        "experimentalWorkspaceModule": true,
+    }
+
+}

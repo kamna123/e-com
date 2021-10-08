@@ -5,6 +5,7 @@ import (
 
 	"e-commerce/cmd/app/repositories"
 
+	"e-commerce/cmd/app/api"
 	"e-commerce/cmd/app/services"
 
 	"go.uber.org/dig"
@@ -19,6 +20,10 @@ func BuildContainer() *dig.Container {
 	err = services.Inject(container)
 	if err != nil {
 		log.Fatal("Failed to inject services", err)
+	}
+	err = api.Inject(container)
+	if err != nil {
+		log.Fatal("Failed to inject APIs", err)
 	}
 	return container
 }

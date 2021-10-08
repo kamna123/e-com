@@ -6,5 +6,6 @@ import (
 
 func Inject(container *dig.Container) error {
 	_ = container.Provide(NewUserRepository)
+	_ = container.Provide(NewCategoryRepository)
 	return nil
 }

@@ -1,0 +1,18 @@
+database:
+  host: 127.0.0.1
+  port: 5432
+  name: ecom
+  env: native
+  user: root 
+  password: password
+
+redis:
+  enable: true
+  host: localhost
+  port:
+  password:
+  database: 0
+
+cache:
+  enable: true
+  expiry_time: 3600
