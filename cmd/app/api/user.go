@@ -28,6 +28,14 @@ func (u *User) validate(r schema.Register) bool {
 		})
 }
 
+// Login godoc
+// @Summary Login user
+// @Produce json
+// @Accept json
+// @Param Body body schema.Login true "The body to create a login details"
+// @Security ApiKeyAuth
+// @Success 200 {object} schema.User
+// @Router /auth/auth/login [post]
 func (u *User) Login(c *gin.Context) {
 	var item schema.Login
 	if err := c.ShouldBindJSON(&item); err != nil {
@@ -51,6 +59,14 @@ func (u *User) Login(c *gin.Context) {
 	c.JSON(http.StatusOK, utils.PrepareResponse(res, "OK", ""))
 }
 
+// Login godoc
+// @Summary Register user
+// @Produce json
+// @Accept json
+// @Param Body body schema.Register true "The body to register a user"
+// @Security ApiKeyAuth
+// @Success 200 {object} schema.User
+// @Router /auth/auth/register  [post]
 func (u *User) Register(c *gin.Context) {
 	var item schema.Register
 	if err := c.ShouldBindJSON(&item); err != nil {

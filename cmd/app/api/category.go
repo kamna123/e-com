@@ -20,6 +20,14 @@ func NewCategoryAPI(service services.ICategoryService) *Category {
 	return &Category{service: service}
 }
 
+// GetCategoryByID godoc
+// @Summary Get get category by code
+// @Produce json
+// @Accept json
+// @Param Body body schema.CategoryQueryParam true "The body to get categories"
+// @Security ApiKeyAuth
+// @Success 200 {object} []schema.Category
+// @Router /api/v1/categories [get]
 func (categ *Category) GetCategories(c *gin.Context) {
 	var query schema.CategoryQueryParam
 	if err := c.ShouldBindQuery(&query); err != nil {
@@ -41,6 +49,13 @@ func (categ *Category) GetCategories(c *gin.Context) {
 	c.JSON(http.StatusOK, utils.PrepareResponse(res, "OK", ""))
 }
 
+// GetCategoryByID godoc
+// @Summary Get get category by uuid
+// @Produce json
+// @Param uuid path string true "Category UUID"
+// @Security ApiKeyAuth
+// @Success 200 {object} schema.Category
+// @Router /api/v1/categories/{uuid} [get]
 func (categ *Category) GetCategoryByID(c *gin.Context) {
 	categoryId := c.Param("uuid")
 

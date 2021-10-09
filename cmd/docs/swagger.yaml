@@ -1,19 +1,561 @@
-basePath: /api/v1
+definitions:
+  schema.CartBody:
+    properties:
+      price:
+        type: string
+      product_id:
+        type: string
+      quantity:
+        type: string
+      userid:
+        type: string
+      uuid:
+        type: string
+    type: object
+  schema.CartDeleteBody:
+    properties:
+      product_id:
+        type: string
+      quantity:
+        type: string
+      userid:
+        type: string
+    type: object
+  schema.Category:
+    properties:
+      active:
+        type: boolean
+      code:
+        type: string
+      description:
+        type: string
+      name:
+        type: string
+      uuid:
+        type: string
+    type: object
+  schema.CategoryQueryParam:
+    properties:
+      active:
+        type: boolean
+      code:
+        type: string
+    type: object
+  schema.Login:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  schema.Order:
+    properties:
+      lines:
+        items:
+          $ref: '#/definitions/schema.OrderLine'
+        type: array
+      status:
+        type: string
+      total_price:
+        type: integer
+      userid:
+        type: string
+      uuid:
+        type: string
+    type: object
+  schema.OrderBodyParam:
+    properties:
+      lines:
+        items:
+          $ref: '#/definitions/schema.OrderLineBodyParam'
+        type: array
+      userid:
+        type: string
+    required:
+    - lines
+    - userid
+    type: object
+  schema.OrderLine:
+    properties:
+      price:
+        type: integer
+      product_uuid:
+        type: string
+      quantity:
+        type: integer
+      uuid:
+        type: string
+    type: object
+  schema.OrderLineBodyParam:
+    properties:
+      product_uuid:
+        type: string
+      quantity:
+        type: integer
+    required:
+    - product_uuid
+    - quantity
+    type: object
+  schema.OrderQueryParam:
+    properties:
+      status:
+        type: string
+      userid:
+        type: string
+    required:
+    - userid
+    type: object
+  schema.Product:
+    properties:
+      active:
+        type: boolean
+      categ_uuid:
+        type: string
+      code:
+        type: string
+      description:
+        type: string
+      name:
+        type: string
+      price:
+        type: integer
+      uuid:
+        type: string
+    type: object
+  schema.ProductBodyParam:
+    properties:
+      categ_uuid:
+        type: string
+      description:
+        type: string
+      name:
+        type: string
+      price:
+        type: integer
+    required:
+    - categ_uuid
+    - name
+    type: object
+  schema.Quantity:
+    properties:
+      product_uuid:
+        type: string
+      quantity:
+        type: integer
+      uuid:
+        type: string
+      warehouse_uuid:
+        type: string
+    type: object
+  schema.QuantityBodyParam:
+    properties:
+      product_uuid:
+        type: string
+      quantity:
+        type: integer
+      warehouse_uuid:
+        type: string
+    required:
+    - product_uuid
+    - quantity
+    - warehouse_uuid
+    type: object
+  schema.QuantityQueryParam:
+    properties:
+      product_uuid:
+        type: string
+      warehouse_uuid:
+        type: string
+    type: object
+  schema.Register:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      role_uuid:
+        type: string
+      username:
+        type: string
+    required:
+    - email
+    - password
+    - username
+    type: object
+  schema.User:
+    properties:
+      email:
+        type: string
+      extra: {}
+      username:
+        type: string
+      uuid:
+        type: string
+    type: object
 info:
-  contact:
-    email: martin7.heinz@gmail.com
-    name: API Support
-  description: Swagger API for Golang Project Blueprint.
-  license:
-    name: MIT
-    url: https://github.com/MartinHeinz/go-project-blueprint/blob/master/LICENSE
-  termsOfService: http://swagger.io/terms/
-  title: Blueprint Swagger API
-  version: "1.0"
-paths: {}
-securityDefinitions:
-  ApiKeyAuth:
-    in: header
-    name: Authorization
-    type: apiKey
+  contact: {}
+paths:
+  /api/v1/cart:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: The body to create a order
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/schema.CartBody'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/schema.CartBody'
+            type: array
+      security:
+      - ApiKeyAuth: []
+      summary: Post add item to cart
+  /api/v1/cart/{uuid}:
+    get:
+      parameters:
+      - description: cart user id
+        in: path
+        name: uuid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/schema.CartBody'
+      security:
+      - ApiKeyAuth: []
+      summary: Get get cart by user id
+  /api/v1/cart/delete:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: The body to update a product
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/schema.CartDeleteBody'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/schema.CartBody'
+      security:
+      - ApiKeyAuth: []
+      summary: Put delete item from cart
+  /api/v1/categories:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: The body to get categories
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/schema.CategoryQueryParam'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/schema.Category'
+            type: array
+      security:
+      - ApiKeyAuth: []
+      summary: Get get category by code
+  /api/v1/categories/{uuid}:
+    get:
+      parameters:
+      - description: Category UUID
+        in: path
+        name: uuid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/schema.Category'
+      security:
+      - ApiKeyAuth: []
+      summary: Get get category by uuid
+  /api/v1/orders:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: The body to get orders
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/schema.OrderQueryParam'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/schema.Order'
+            type: array
+      security:
+      - ApiKeyAuth: []
+      summary: Get get order by query param
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: The body to create a order
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/schema.OrderBodyParam'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/schema.Order'
+      security:
+      - ApiKeyAuth: []
+      summary: Post create order
+  /api/v1/orders/{uuid}:
+    get:
+      parameters:
+      - description: Order UUID
+        in: path
+        name: uuid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/schema.Order'
+      security:
+      - ApiKeyAuth: []
+      summary: Get get order by uuid
+  /api/v1/products:
+    get:
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/schema.Product'
+            type: array
+      security:
+      - ApiKeyAuth: []
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: The body to create a product
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/schema.ProductBodyParam'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/schema.Product'
+            type: array
+      security:
+      - ApiKeyAuth: []
+      summary: Post create product
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: The body to update a product
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/schema.ProductBodyParam'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/schema.Product'
+      security:
+      - ApiKeyAuth: []
+      summary: Put update product
+  /api/v1/products/{uuid}:
+    get:
+      parameters:
+      - description: Product UUID
+        in: path
+        name: uuid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/schema.Product'
+            type: array
+      security:
+      - ApiKeyAuth: []
+      summary: Get get product by category ID
+  /api/v1/quantities:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: The body to get categories
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/schema.QuantityQueryParam'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/schema.Quantity'
+            type: array
+      security:
+      - ApiKeyAuth: []
+      summary: Get get quantities
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: The body to create a order
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/schema.QuantityBodyParam'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/schema.Quantity'
+      security:
+      - ApiKeyAuth: []
+      summary: Post create quantity
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: The body to create a order
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/schema.QuantityBodyParam'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/schema.Quantity'
+      security:
+      - ApiKeyAuth: []
+      summary: Put update quantity
+  /api/v1/quantities/{uuid}:
+    get:
+      parameters:
+      - description: Quantity UUID
+        in: path
+        name: uuid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/schema.Quantity'
+      security:
+      - ApiKeyAuth: []
+      summary: Get get quantity by uuid
+  /auth/auth/login:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: The body to create a login details
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/schema.Login'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/schema.User'
+      security:
+      - ApiKeyAuth: []
+      summary: Login user
+  /auth/auth/register:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: The body to register a user
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/schema.Register'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/schema.User'
+      security:
+      - ApiKeyAuth: []
+      summary: Register user
 swagger: "2.0"

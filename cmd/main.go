@@ -5,6 +5,7 @@ import (
 	"e-commerce/cmd/app/container"
 	"e-commerce/cmd/app/router"
 	_ "e-commerce/cmd/docs"
+	"e-commerce/cmd/migrations"
 	"fmt"
 	"log"
 	"net/http"
@@ -17,6 +18,7 @@ import (
 )
 
 func main() {
+	migrations.Migrate()
 	container := container.BuildContainer()
 	engine := router.InitGinEngine(container)
 	server := &http.Server{
@@ -50,3 +52,70 @@ func main() {
 	glog.Info("Server exiting")
 	fmt.Print(container)
 }
+
+// package main
+
+// import (
+// 	"time"
+
+// 	"github.com/google/uuid"
+// 	"github.com/jinzhu/gorm"
+// 	_ "github.com/jinzhu/gorm/dialects/sqlite"
+// )
+
+// // Base contains common columns for all tables.
+// type Base struct {
+// 	ID        string     `json:"uuid" gorm:"unique;not null;index;primary_key"`
+// 	CreatedAt time.Time  `json:"created_at"`
+// 	UpdatedAt time.Time  `json:"update_at"`
+// 	DeletedAt *time.Time `sql:"index" json:"deleted_at"`
+// }
+
+// // BeforeCreate will set a UUID rather than numeric ID.
+// func (base *Base) BeforeCreate(scope *gorm.Scope) error {
+// 	base.ID = uuid.New().String()
+
+// 	return nil
+// }
+
+// // User is the model for the user table.
+// type User struct {
+// 	Base
+// 	SomeFlag bool `gorm:"column:some_flag;not null;default:true" json:"some_flag"`
+// 	//Profile  Profile `json:"profile"`
+// }
+
+// // Profile is the model for the profile table.
+// type Profile struct {
+// 	Base
+// 	Name   string `gorm:"column:name;size:128;not null;" json:"name"`
+// 	User   User   `gorm:"association_foreignkey:UserID:"`
+// 	UserID uint
+// }
+
+// func main() {
+// 	db, err := gorm.Open("sqlite3", "test.db")
+// 	if err != nil {
+// 		panic(err)
+// 	}
+
+// 	db.LogMode(true)
+// 	db.AutoMigrate(&User{}, &Profile{})
+
+// 	// user := &User{SomeFlag: false}
+// 	// if db.Create(&user).Error != nil {
+// 	// 	log.Panic("Unable to create user.")
+// 	// }
+
+// 	// profile := &Profile{Name: "New User", UserID: user.Base.ID}
+// 	// if db.Create(&profile).Error != nil {
+// 	// 	log.Panic("Unable to create profile.")
+// 	// }
+
+// 	// fetchedUser := &User{}
+// 	// if db.Where("id = ?", profile.UserID).Preload("Profile").First(&fetchedUser).RecordNotFound() {
+// 	// 	log.Panic("Unable to find created user.")
+// 	// }
+
+// 	//fmt.Printf("User: %+v\n", fetchedUser)
+// }

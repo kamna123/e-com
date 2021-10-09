@@ -6,11 +6,10 @@ import (
 )
 
 type User struct {
-	UUID     string `json:"uuid" gorm:"unique;not null;index;primary_key"`
+	UUID     string `json:"uuid" gorm:"unique;not null;index;primaryKey"`
 	Username string `json:"username" gorm:"unique;not null;index"`
 	Email    string `json:"email" gorm:"unique;not null;index"`
 	Password string `json:"password"`
-	RoleUUID string `json:"role_uuid"`
 
 	gorm.Model
 }
