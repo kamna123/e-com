@@ -11,5 +11,6 @@ func Inject(container *dig.Container) error {
 	_ = container.Provide(NewQuantityAPI)
 	_ = container.Provide(NewCartAPI)
 	_ = container.Provide(NewOrderAPI)
+	_ = container.Provide(NewAddressAPI)
 	return nil
 }

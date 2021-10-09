@@ -1,4 +1,25 @@
 definitions:
+  schema.Address:
+    properties:
+      city:
+        type: string
+      country:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      phone_number:
+        type: string
+      street_address:
+        type: string
+      user_id:
+        type: string
+      uuid:
+        type: string
+      zip_code:
+        type: string
+    type: object
   schema.CartBody:
     properties:
       price:
@@ -139,6 +160,13 @@ definitions:
     - categ_uuid
     - name
     type: object
+  schema.ProductQueryParam:
+    properties:
+      active:
+        type: string
+      code:
+        type: string
+    type: object
   schema.Quantity:
     properties:
       product_uuid:
@@ -170,6 +198,42 @@ definitions:
       warehouse_uuid:
         type: string
     type: object
+  schema.RazorPayOrderParam:
+    properties:
+      amount:
+        type: integer
+      currency:
+        type: string
+    required:
+    - amount
+    type: object
+  schema.RazorPayResp:
+    properties:
+      amount:
+        type: integer
+      amount_due:
+        type: integer
+      amount_paid:
+        type: integer
+      attempts:
+        type: integer
+      created_at:
+        type: integer
+      currency:
+        type: string
+      entity:
+        type: string
+      id:
+        type: string
+      notes:
+        items: {}
+        type: array
+      offer_id: {}
+      receipt:
+        type: string
+      status:
+        type: string
+    type: object
   schema.Register:
     properties:
       email:
@@ -198,6 +262,65 @@ definitions:
 info:
   contact: {}
 paths:
+  /api/v1/address:
+    post:
+      parameters:
+      - description: The body to create a order
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/schema.Address'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/schema.Address'
+      security:
+      - ApiKeyAuth: []
+  /api/v1/address/{uuid}:
+    get:
+      parameters:
+      - description: user id
+        in: path
+        name: uuid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/schema.Address'
+      security:
+      - ApiKeyAuth: []
+      summary: Get get address by userid
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: user id
+        in: path
+        name: uuid
+        required: true
+        type: string
+      - description: The body to update a address
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/schema.Address'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/schema.Address'
+      security:
+      - ApiKeyAuth: []
+      summary: Put update address
   /api/v1/cart:
     post:
       consumes:
@@ -301,6 +424,27 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Get get category by uuid
+  /api/v1/order/razorpay:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: The body to create a order
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/schema.RazorPayOrderParam'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/schema.RazorPayResp'
+      security:
+      - ApiKeyAuth: []
+      summary: Post get razor pay order id
   /api/v1/orders:
     get:
       consumes:
@@ -364,6 +508,15 @@ paths:
       summary: Get get order by uuid
   /api/v1/products:
     get:
+      parameters:
+      - description: The body to get orders
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/schema.ProductQueryParam'
+      produces:
+      - application/json
       responses:
         "200":
           description: OK
@@ -373,6 +526,7 @@ paths:
             type: array
       security:
       - ApiKeyAuth: []
+      summary: Get list products
     post:
       consumes:
       - application/json

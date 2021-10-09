@@ -15,9 +15,10 @@ func Migrate() {
 	OrderLine := models.OrderLine{}
 	Cart := models.Cart{}
 	Quantity := models.Quantity{}
+	Address := models.Address{}
 	dbs.Database.LogMode(true)
 	//dbs.Database.AutoMigrate(&Product)
-	dbs.Database.AutoMigrate(&User, &Category, &Product, &Order, &OrderLine, &Cart, &Quantity)
+	dbs.Database.AutoMigrate(&User, &Category, &Product, &Order, &OrderLine, &Cart, &Quantity, &Address)
 	dbs.Database.Model(&Product).AddForeignKey("categ_uuid", "categories(uuid)", "RESTRICT", "RESTRICT")
 	dbs.Database.Model(&Order).AddForeignKey("user_id", "users(uuid)", "RESTRICT", "RESTRICT")
 	dbs.Database.Model(&OrderLine).AddForeignKey("product_uuid", "products(uuid)", "RESTRICT", "RESTRICT")
@@ -25,6 +26,7 @@ func Migrate() {
 	dbs.Database.Model(&Cart).AddForeignKey("user_id", "users(uuid)", "RESTRICT", "RESTRICT")
 	dbs.Database.Model(&Cart).AddForeignKey("product_uuid", "products(uuid)", "RESTRICT", "RESTRICT")
 	dbs.Database.Model(&Quantity).AddForeignKey("product_uuid", "products(uuid)", "RESTRICT", "RESTRICT")
+	dbs.Database.Model(&Address).AddForeignKey("user_id", "users(uuid)", "RESTRICT", "RESTRICT")
 
 	//createAdmin()
 }

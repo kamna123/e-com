@@ -21,6 +21,35 @@ func NewOrderAPI(service services.IOrderSerivce) *Order {
 	return &Order{service: service}
 }
 
+// CreateOrder godoc
+// @Summary Post get razor pay order id
+// @Produce json
+// @Accept json
+// @Param Body body schema.RazorPayOrderParam true "The body to create a order"
+// @Security ApiKeyAuth
+// @Success 200 {object} schema.RazorPayResp
+// @Router /api/v1/order/razorpay [post]
+func (categ *Order) RazorPayOrder(c *gin.Context) {
+	var query schema.RazorPayOrderParam
+	if err := c.Bind(&query); err != nil {
+		glog.Error("Failed to parse request query: ", err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	ctx := c.Request.Context()
+	orders, err := categ.service.RazorPayOrder(ctx, &query)
+	if err != nil {
+		glog.Error("Failed to get orders: ", err)
+		c.JSON(http.StatusBadRequest, utils.PrepareResponse(nil, err.Error(), ""))
+		return
+	}
+
+	var res schema.RazorPayResp
+	copier.Copy(&res, &orders)
+	c.JSON(http.StatusOK, utils.PrepareResponse(res, "OK", ""))
+
+}
+
 // GetOrders godoc
 // @Summary Get get order by query param
 // @Produce json

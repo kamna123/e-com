@@ -17,6 +17,7 @@ func RegisterAPI(r *gin.Engine, container *dig.Container) error {
 		quantity *api.Quantity,
 		cart *api.Cart,
 		order *api.Order,
+		address *api.Address,
 		//role *api.Role,
 	) error {
 		auth := r.Group("/auth")
@@ -51,7 +52,13 @@ func RegisterAPI(r *gin.Engine, container *dig.Container) error {
 		{
 			apiV1.GET("/orders", order.GetOrders)
 			apiV1.POST("/orders", order.CreateOrder)
+			apiV1.POST("/order/razorpay", order.RazorPayOrder)
 			apiV1.GET("/orders/:uuid", order.GetOrderByID)
+		}
+		{
+			apiV1.GET("/address/:uuid", address.GetAddressByUserID)
+			apiV1.POST("/address", address.CreateAddress)
+			apiV1.PUT("/address/:uuid", address.UpdateAddress)
 		}
 		return nil
 	})

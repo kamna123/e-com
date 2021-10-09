@@ -17,3 +17,11 @@ type OrderQueryParam struct {
 	UserID string `json:"userid" validate:"required"`
 	Status string `json:"status,omitempty" form:"active"`
 }
+type RazorPayOrderParam struct {
+	Amount   uint   `json:"amount" validate:"required"`
+	Currency string `json:"currency"`
+}
+
+type RazorPayResp struct {
+	ID string `json:"id"`
+}

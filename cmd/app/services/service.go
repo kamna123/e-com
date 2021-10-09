@@ -9,5 +9,6 @@ func Inject(container *dig.Container) error {
 	_ = container.Provide(NewQuantityService)
 	_ = container.Provide(NewCartService)
 	_ = container.Provide(NewOrderService)
+	_ = container.Provide(NewAddressService)
 	return nil
 }

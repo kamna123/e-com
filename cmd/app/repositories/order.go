@@ -14,6 +14,7 @@ type OrderRepository interface {
 	GetOrders(query *schema.OrderQueryParam) (*[]models.Order, error)
 	GetOrderByID(uuid string) (*models.Order, error)
 	CreateOrder(item *schema.OrderBodyParam) (*models.Order, error)
+	RazorPayOrder() (string, error)
 }
 
 type orderRepo struct {
@@ -26,6 +27,9 @@ func NewOrderRepository() OrderRepository {
 	return &orderRepo{db: dbs.Database, lineRepo: NewOrderLineRepository()}
 }
 
+func (r *orderRepo) RazorPayOrder() (string, error) {
+	return "", nil
+}
 func (r *orderRepo) GetOrders(query *schema.OrderQueryParam) (*[]models.Order, error) {
 	var orders []models.Order
 	if r.db.Find(&orders, query).RecordNotFound() {
