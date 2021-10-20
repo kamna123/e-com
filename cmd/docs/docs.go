@@ -532,7 +532,7 @@ var doc = `{
                 }
             }
         },
-        "/api/v1/products/{uuid}": {
+        "/api/v1/products/{cate_id}": {
             "get": {
                 "security": [
                     {
@@ -560,6 +560,36 @@ var doc = `{
                             "items": {
                                 "$ref": "#/definitions/schema.Product"
                             }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/products/{uuid}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get get product by uuid",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Product UUID",
+                        "name": "uuid",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/schema.Product"
                         }
                     }
                 }
@@ -1092,39 +1122,7 @@ var doc = `{
         "schema.RazorPayResp": {
             "type": "object",
             "properties": {
-                "amount": {
-                    "type": "integer"
-                },
-                "amount_due": {
-                    "type": "integer"
-                },
-                "amount_paid": {
-                    "type": "integer"
-                },
-                "attempts": {
-                    "type": "integer"
-                },
-                "created_at": {
-                    "type": "integer"
-                },
-                "currency": {
-                    "type": "string"
-                },
-                "entity": {
-                    "type": "string"
-                },
                 "id": {
-                    "type": "string"
-                },
-                "notes": {
-                    "type": "array",
-                    "items": {}
-                },
-                "offer_id": {},
-                "receipt": {
-                    "type": "string"
-                },
-                "status": {
                     "type": "string"
                 }
             }
@@ -1134,6 +1132,7 @@ var doc = `{
             "required": [
                 "email",
                 "password",
+                "phone_number",
                 "username"
             ],
             "properties": {
@@ -1143,7 +1142,7 @@ var doc = `{
                 "password": {
                     "type": "string"
                 },
-                "role_uuid": {
+                "phone_number": {
                     "type": "string"
                 },
                 "username": {

@@ -3,9 +3,9 @@ package services
 import (
 	"context"
 	"e-commerce/cmd/app/models"
-	"e-commerce/cmd/app/schema"
-
 	"e-commerce/cmd/app/repositories"
+	"e-commerce/cmd/app/schema"
+	"e-commerce/cmd/utils"
 )
 
 type IUserService interface {
@@ -27,8 +27,8 @@ func (u *user) Login(ctx context.Context, item *schema.Login) (*models.User, str
 		return nil, "", err
 	}
 
-	//token := jwtMiddle.GenerateToken(user)
-	return user, "", nil
+	token := utils.GenerateToken(user)
+	return user, token, nil
 }
 
 func (u *user) Register(ctx context.Context, item *schema.Register) (*models.User, string, error) {
@@ -37,6 +37,6 @@ func (u *user) Register(ctx context.Context, item *schema.Register) (*models.Use
 		return nil, "", err
 	}
 
-	//token := jwtMiddle.GenerateToken(user)
-	return user, "", nil
+	token := utils.GenerateToken(user)
+	return user, token, nil
 }

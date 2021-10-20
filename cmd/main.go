@@ -17,8 +17,12 @@ import (
 	"github.com/golang/glog"
 )
 
+func host() {
+
+}
 func main() {
 	migrations.Migrate()
+
 	container := container.BuildContainer()
 	engine := router.InitGinEngine(container)
 	server := &http.Server{

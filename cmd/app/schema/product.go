@@ -1,13 +1,15 @@
 package schema
 
 type Product struct {
-	UUID        string `json:"uuid"`
-	Code        string `json:"code"`
-	Name        string `json:"name"`
-	Description string `json:"description"`
-	CategUUID   string `json:"categ_uuid"`
-	Price       uint   `json:"price"`
-	Active      bool   `json:"active"`
+	UUID          string `json:"uuid"`
+	Code          string `json:"code"`
+	Name          string `json:"name"`
+	Description   string `json:"description"`
+	CategUUID     string `json:"categ_uuid"`
+	Price         uint   `json:"price"`
+	Active        bool   `json:"active"`
+	VideoPath     string `json:"video_path"`
+	ThumbnailPath string `json:"thumbnail_path"`
 }
 
 type ProductQueryParam struct {

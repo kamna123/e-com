@@ -35,7 +35,7 @@ func RegisterAPI(r *gin.Engine, container *dig.Container) error {
 		{
 			apiV1.GET("/products", product.GetProducts)
 			apiV1.POST("/products", product.CreateProduct)
-			apiV1.GET("/products/:uuid", product.GetProductByID)
+			apiV1.GET("/products/:uuid", product.GetProductByCategoryID)
 			apiV1.PUT("/products/:uuid", product.UpdateProduct)
 		}
 		{

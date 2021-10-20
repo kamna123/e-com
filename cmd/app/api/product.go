@@ -78,7 +78,7 @@ func (categ *Product) GetProducts(c *gin.Context) {
 // @Param uuid path string true "Product UUID"
 // @Security ApiKeyAuth
 // @Success 200 {object} []schema.Product
-// @Router /api/v1/products/{uuid} [get]
+// @Router /api/v1/products/{cate_id} [get]
 func (p *Product) GetProductByCategoryID(c *gin.Context) {
 	categUUID := c.Param("uuid")
 

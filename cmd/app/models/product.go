@@ -8,14 +8,15 @@ import (
 )
 
 type Product struct {
-	UUID        string `json:"uuid" gorm:"unique;not null;index;primaryKey"`
-	Code        string `json:"code" gorm:"unique;not null;index"`
-	Name        string `json:"name"`
-	Description string `json:"description"`
-	CategUUID   string `json:"categ_uuid"`
-	Price       uint   `json:"price"`
-	Active      bool   `json:"active" gorm:"default:true"`
-
+	UUID          string `json:"uuid" gorm:"unique;not null;index;primaryKey"`
+	Code          string `json:"code" gorm:"unique;not null;index"`
+	Name          string `json:"name"`
+	Description   string `json:"description"`
+	CategUUID     string `json:"categ_uuid"`
+	Price         uint   `json:"price"`
+	Active        bool   `json:"active" gorm:"default:true"`
+	VideoPath     string `json:"video_path"`
+	ThumbnailPath string `json:"thumbnail_path"`
 	gorm.Model
 }
 

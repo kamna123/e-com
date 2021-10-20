@@ -209,29 +209,7 @@ definitions:
     type: object
   schema.RazorPayResp:
     properties:
-      amount:
-        type: integer
-      amount_due:
-        type: integer
-      amount_paid:
-        type: integer
-      attempts:
-        type: integer
-      created_at:
-        type: integer
-      currency:
-        type: string
-      entity:
-        type: string
       id:
-        type: string
-      notes:
-        items: {}
-        type: array
-      offer_id: {}
-      receipt:
-        type: string
-      status:
         type: string
     type: object
   schema.Register:
@@ -240,13 +218,14 @@ definitions:
         type: string
       password:
         type: string
-      role_uuid:
+      phone_number:
         type: string
       username:
         type: string
     required:
     - email
     - password
+    - phone_number
     - username
     type: object
   schema.User:
@@ -569,7 +548,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Put update product
-  /api/v1/products/{uuid}:
+  /api/v1/products/{cate_id}:
     get:
       parameters:
       - description: Product UUID
@@ -589,6 +568,24 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Get get product by category ID
+  /api/v1/products/{uuid}:
+    get:
+      parameters:
+      - description: Product UUID
+        in: path
+        name: uuid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/schema.Product'
+      security:
+      - ApiKeyAuth: []
+      summary: Get get product by uuid
   /api/v1/quantities:
     get:
       consumes:

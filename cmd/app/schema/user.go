@@ -8,10 +8,10 @@ type User struct {
 }
 
 type Register struct {
-	Username string `json:"username" validate:"required"`
-	Email    string `json:"email" validate:"required"`
-	Password string `json:"password" validate:"required"`
-	RoleUUID string `json:"role_uuid"`
+	Username    string `json:"username" validate:"required"`
+	Email       string `json:"email" validate:"required"`
+	Password    string `json:"password" validate:"required"`
+	PhoneNumber string `json:"phone_number" validate:"required"`
 }
 
 type Login struct {
