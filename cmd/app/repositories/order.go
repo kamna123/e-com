@@ -4,6 +4,7 @@ import (
 	"e-commerce/cmd/app/models"
 	"e-commerce/cmd/app/schema"
 	dbs "e-commerce/cmd/database"
+	"e-commerce/cmd/utils"
 	"errors"
 
 	"github.com/jinzhu/copier"
@@ -32,10 +33,17 @@ func (r *orderRepo) RazorPayOrder() (string, error) {
 }
 func (r *orderRepo) GetOrders(query *schema.OrderQueryParam) (*[]models.Order, error) {
 	var orders []models.Order
-	if r.db.Find(&orders, query).RecordNotFound() {
+	var lines []models.OrderLine
+	var mapQuery map[string]interface{}
+	utils.Copy(&mapQuery, query)
+	if r.db.Where(mapQuery).Find(&orders).RecordNotFound() {
 		return nil, nil
 	}
+	for index, val := range orders {
+		r.db.Where("order_uuid = ?", val.UUID).Find(&lines)
+		orders[index].Lines = lines
 
+	}
 	return &orders, nil
 }
 

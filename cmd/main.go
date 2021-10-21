@@ -26,7 +26,7 @@ func main() {
 	container := container.BuildContainer()
 	engine := router.InitGinEngine(container)
 	server := &http.Server{
-		Addr:    ":8888",
+		Addr:    ":3000",
 		Handler: engine,
 	}
 	go func() {

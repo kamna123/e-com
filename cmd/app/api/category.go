@@ -8,6 +8,7 @@ import (
 	"e-commerce/cmd/utils"
 
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 	"github.com/golang/glog"
 	"github.com/jinzhu/copier"
 )
@@ -24,7 +25,7 @@ func NewCategoryAPI(service services.ICategoryService) *Category {
 // @Summary Get get category by code
 // @Produce json
 // @Accept json
-// @Param Body body schema.CategoryQueryParam true "The body to get categories"
+// @Param code path string true "Category code"
 // @Security ApiKeyAuth
 // @Success 200 {object} []schema.Category
 // @Router /api/v1/categories [get]
@@ -69,5 +70,42 @@ func (categ *Category) GetCategoryByID(c *gin.Context) {
 
 	var res schema.Category
 	copier.Copy(&res, &category)
+	c.JSON(http.StatusOK, utils.PrepareResponse(res, "OK", ""))
+}
+
+// CreateCategory godoc
+// @Summary Post create category
+// @Produce json
+// @Accept json
+// @Param Body body schema.Category true "The body to create a category"
+// @Security ApiKeyAuth
+// @Success 200 {object} schema.Category
+// @Router /api/v1/categories [post]
+func (categ *Category) CreateCategory(c *gin.Context) {
+	var item schema.Category
+	if err := c.Bind(&item); err != nil {
+		glog.Error("Failed to parse request body: ", err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	validate := validator.New()
+	err := validate.Struct(item)
+	if err != nil {
+		glog.Error("Request body is invalid: ", err.Error())
+		c.JSON(http.StatusBadRequest, utils.PrepareResponse(nil, err.Error(), ""))
+		return
+	}
+
+	ctx := c.Request.Context()
+	categories, err := categ.service.CreateCategory(ctx, &item)
+	if err != nil {
+		glog.Error("Failed to create category", err.Error())
+		c.JSON(http.StatusBadRequest, utils.PrepareResponse(nil, err.Error(), ""))
+		return
+	}
+
+	var res schema.Category
+	copier.Copy(&res, &categories)
 	c.JSON(http.StatusOK, utils.PrepareResponse(res, "OK", ""))
 }

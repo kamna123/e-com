@@ -29,7 +29,7 @@ func NewCartAPI(service services.ICartService) *Cart {
 // @Router /api/v1/cart [post]
 func (categ *Cart) AddToCart(c *gin.Context) {
 	var query schema.CartBody
-	if err := c.ShouldBindQuery(&query); err != nil {
+	if err := c.Bind(&query); err != nil {
 		glog.Error("Failed to parse request query: ", err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -66,7 +66,7 @@ func (categ *Cart) GetCart(c *gin.Context) {
 		return
 	}
 
-	var res schema.CartBody
+	var res []schema.CartBody
 	copier.Copy(&res, &category)
 	c.JSON(http.StatusOK, utils.PrepareResponse(res, "OK", ""))
 }
@@ -78,17 +78,17 @@ func (categ *Cart) GetCart(c *gin.Context) {
 // @Param Body body schema.CartDeleteBody true "The body to update a product"
 // @Security ApiKeyAuth
 // @Success 200 {object} schema.CartBody
-// @Router /api/v1/cart/delete [put]
-func (categ *Cart) DeleteFromCart(c *gin.Context) {
+// @Router /api/v1/cart/update [put]
+func (categ *Cart) UpdateFromCart(c *gin.Context) {
 	var query schema.CartDeleteBody
-	if err := c.ShouldBindQuery(&query); err != nil {
+	if err := c.Bind(&query); err != nil {
 		glog.Error("Failed to parse request query: ", err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
 	ctx := c.Request.Context()
-	category, err := categ.service.DeleteFromCart(ctx, &query)
+	category, err := categ.service.UpdateFromCart(ctx, &query)
 	if err != nil {
 		glog.Error("Failed to get category: ", err)
 		c.JSON(http.StatusBadRequest, utils.PrepareResponse(nil, err.Error(), ""))

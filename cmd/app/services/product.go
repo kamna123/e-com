@@ -11,7 +11,7 @@ import (
 type IProductService interface {
 	GetProducts(c context.Context, params schema.ProductQueryParam) (*[]models.Product, error)
 	GetProductByID(ctx context.Context, uuid string) (*models.Product, error)
-	CreateProduct(ctx context.Context, item *schema.ProductBodyParam) (*models.Product, error)
+	CreateProduct(ctx context.Context, item *schema.Product) (*models.Product, error)
 	UpdateProduct(ctx context.Context, uuid string, item *schema.ProductBodyParam) (*models.Product, error)
 	GetProductByCategoryID(ctx context.Context, uuid string) (*[]models.Product, error)
 }
@@ -51,7 +51,7 @@ func (p *product) GetProductByCategoryID(ctx context.Context, uuid string) (*[]m
 	return products, nil
 }
 
-func (p *product) CreateProduct(ctx context.Context, item *schema.ProductBodyParam) (*models.Product, error) {
+func (p *product) CreateProduct(ctx context.Context, item *schema.Product) (*models.Product, error) {
 	product, err := p.repo.CreateProduct(item)
 	if err != nil {
 		return nil, err

@@ -27,9 +27,9 @@ func NewProductAPI(service services.IProductService) *Product {
 // @Param uuid path string true "Product UUID"
 // @Security ApiKeyAuth
 // @Success 200 {object} schema.Product
-// @Router /api/v1/products/{uuid} [get]
+// @Router /api/v1/products/id/{uuid} [get]
 func (p *Product) GetProductByID(c *gin.Context) {
-	productId := c.Param("uuid")
+	productId := c.Param("id")
 
 	ctx := c.Request.Context()
 	product, err := p.service.GetProductByID(ctx, productId)
@@ -99,12 +99,12 @@ func (p *Product) GetProductByCategoryID(c *gin.Context) {
 // @Summary Post create product
 // @Produce json
 // @Accept json
-// @Param Body body schema.ProductBodyParam true "The body to create a product"
+// @Param Body body schema.Product true "The body to create a product"
 // @Security ApiKeyAuth
-// @Success 200 {object} []schema.Product
+// @Success 200 {object} schema.Product
 // @Router /api/v1/products [post]
 func (p *Product) CreateProduct(c *gin.Context) {
-	var item schema.ProductBodyParam
+	var item schema.Product
 	if err := c.Bind(&item); err != nil {
 		glog.Error("Failed to parse request body: ", err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -127,7 +127,7 @@ func (p *Product) CreateProduct(c *gin.Context) {
 		return
 	}
 
-	var res []schema.Product
+	var res schema.Product
 	copier.Copy(&res, &products)
 	c.JSON(http.StatusOK, utils.PrepareResponse(res, "OK", ""))
 }

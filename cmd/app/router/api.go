@@ -28,13 +28,16 @@ func RegisterAPI(r *gin.Engine, container *dig.Container) error {
 		}
 		apiV1 := r.Group("api/v1")
 		{
-			apiV1.GET("/categories", category.GetCategories)
 			apiV1.GET("/categories/:uuid", category.GetCategoryByID)
+			apiV1.GET("/categories", category.GetCategories)
+
+			apiV1.POST("/categories", category.CreateCategory)
 
 		}
 		{
 			apiV1.GET("/products", product.GetProducts)
 			apiV1.POST("/products", product.CreateProduct)
+			apiV1.GET("/products/id/:id", product.GetProductByID)
 			apiV1.GET("/products/:uuid", product.GetProductByCategoryID)
 			apiV1.PUT("/products/:uuid", product.UpdateProduct)
 		}
@@ -47,7 +50,7 @@ func RegisterAPI(r *gin.Engine, container *dig.Container) error {
 		{
 			apiV1.GET("/cart/:uuid", cart.GetCart)
 			apiV1.POST("/cart", cart.AddToCart)
-			apiV1.PUT("/cart/delete", cart.DeleteFromCart)
+			apiV1.PUT("/cart/update", cart.UpdateFromCart)
 		}
 		{
 			apiV1.GET("/orders", order.GetOrders)

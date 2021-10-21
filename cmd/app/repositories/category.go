@@ -8,12 +8,14 @@ import (
 	"e-commerce/cmd/database"
 	"e-commerce/cmd/utils"
 
+	"github.com/jinzhu/copier"
 	"github.com/jinzhu/gorm"
 )
 
 type ICategoryRepository interface {
 	GetCategories(query *schema.CategoryQueryParam) (*[]models.Category, error)
 	GetCategoryByID(uuid string) (*models.Category, error)
+	CreateCategory(item *schema.Category) (*models.Category, error)
 }
 
 type categRepo struct {
@@ -39,6 +41,17 @@ func (r *categRepo) GetCategoryByID(uuid string) (*models.Category, error) {
 	var category models.Category
 	if r.db.Where("uuid = ?", uuid).Find(&category).RecordNotFound() {
 		return nil, errors.New("not found category")
+	}
+
+	return &category, nil
+}
+
+func (r *categRepo) CreateCategory(item *schema.Category) (*models.Category, error) {
+	var category models.Category
+	copier.Copy(&category, &item)
+
+	if err := r.db.Create(&category).Error; err != nil {
+		return nil, err
 	}
 
 	return &category, nil

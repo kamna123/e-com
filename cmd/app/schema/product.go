@@ -3,9 +3,10 @@ package schema
 type Product struct {
 	UUID          string `json:"uuid"`
 	Code          string `json:"code"`
-	Name          string `json:"name"`
-	Description   string `json:"description"`
+	Name          string `json:"name"`        // title
+	Description   string `json:"description"` //brand
 	CategUUID     string `json:"categ_uuid"`
+	Brand         string `json:"brand"`
 	Price         uint   `json:"price"`
 	Active        bool   `json:"active"`
 	VideoPath     string `json:"video_path"`

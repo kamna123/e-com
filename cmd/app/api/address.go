@@ -39,7 +39,7 @@ func (w *Address) GetAddressByUserID(c *gin.Context) {
 		return
 	}
 
-	var res schema.Address
+	var res []schema.Address
 	copier.Copy(&res, &Address)
 	c.JSON(http.StatusOK, utils.PrepareResponse(res, "OK", ""))
 }

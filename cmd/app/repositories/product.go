@@ -15,7 +15,7 @@ type IProductRepository interface {
 	GetProducts(params schema.ProductQueryParam) (*[]models.Product, error)
 	GetProductByID(uuid string) (*models.Product, error)
 	GetProductByCategoryID(uuid string) (*[]models.Product, error)
-	CreateProduct(item *schema.ProductBodyParam) (*models.Product, error)
+	CreateProduct(item *schema.Product) (*models.Product, error)
 	UpdateProduct(uuid string, item *schema.ProductBodyParam) (*models.Product, error)
 }
 
@@ -54,7 +54,7 @@ func (r *productRepo) GetProductByID(uuid string) (*models.Product, error) {
 	return &product, nil
 }
 
-func (r *productRepo) CreateProduct(item *schema.ProductBodyParam) (*models.Product, error) {
+func (r *productRepo) CreateProduct(item *schema.Product) (*models.Product, error) {
 	var product models.Product
 	copier.Copy(&product, &item)
 

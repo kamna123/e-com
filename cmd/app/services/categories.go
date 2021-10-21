@@ -14,6 +14,7 @@ import (
 type ICategoryService interface {
 	GetCategories(ctx context.Context, query *schema.CategoryQueryParam) (*[]models.Category, error)
 	GetCategoryByID(ctx context.Context, uuid string) (*models.Category, error)
+	CreateCategory(cxt context.Context, item *schema.Category) (*models.Category, error)
 }
 
 type category struct {
@@ -38,6 +39,16 @@ func (c *category) GetCategoryByID(ctx context.Context, uuid string) (*models.Ca
 	category, err := c.repo.GetCategoryByID(uuid)
 	if err != nil {
 		glog.Error("Failed to get category: ", err)
+		return nil, err
+	}
+
+	return category, nil
+}
+
+func (c *category) CreateCategory(cxt context.Context, item *schema.Category) (*models.Category, error) {
+	category, err := c.repo.CreateCategory(item)
+	if err != nil {
+		glog.Error("Failed to create category", err.Error())
 		return nil, err
 	}
 

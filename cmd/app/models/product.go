@@ -11,6 +11,7 @@ type Product struct {
 	UUID          string `json:"uuid" gorm:"unique;not null;index;primaryKey"`
 	Code          string `json:"code" gorm:"unique;not null;index"`
 	Name          string `json:"name"`
+	Brand         string `json:"brand"`
 	Description   string `json:"description"`
 	CategUUID     string `json:"categ_uuid"`
 	Price         uint   `json:"price"`

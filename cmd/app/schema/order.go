@@ -14,8 +14,8 @@ type OrderBodyParam struct {
 }
 
 type OrderQueryParam struct {
-	UserID string `json:"userid" validate:"required"`
-	Status string `json:"status,omitempty" form:"active"`
+	UserID string `json:"user_id" validate:"required" form:"userid"`
+	Status string `json:"status,omitempty" form:"status"`
 }
 type RazorPayOrderParam struct {
 	Amount   uint   `json:"amount" validate:"required"`

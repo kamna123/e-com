@@ -12,7 +12,7 @@ import (
 type ICartService interface {
 	AddToCart(ctx context.Context, query *schema.CartBody) (*models.Cart, error)
 	GetCart(ctx context.Context, uuid string) (*[]models.Cart, error)
-	DeleteFromCart(ctx context.Context, query *schema.CartDeleteBody) (*models.Cart, error)
+	UpdateFromCart(ctx context.Context, query *schema.CartDeleteBody) (*models.Cart, error)
 }
 
 type cart struct {
@@ -43,8 +43,8 @@ func (c *cart) GetCart(ctx context.Context, uuid string) (*[]models.Cart, error)
 	return category, nil
 }
 
-func (c *cart) DeleteFromCart(ctx context.Context, query *schema.CartDeleteBody) (*models.Cart, error) {
-	category, err := c.repo.DeleteFromCart(query)
+func (c *cart) UpdateFromCart(ctx context.Context, query *schema.CartDeleteBody) (*models.Cart, error) {
+	category, err := c.repo.UpdateFromCart(query)
 	if err != nil {
 		glog.Error("Failed to get cart: ", err)
 		return nil, err

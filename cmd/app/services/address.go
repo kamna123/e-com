@@ -9,7 +9,7 @@ import (
 )
 
 type IAddressSerivce interface {
-	GetAddressByUserID(ctx context.Context, uuid string) (*models.Address, error)
+	GetAddressByUserID(ctx context.Context, uuid string) (*[]models.Address, error)
 	CreateAddress(ctx context.Context, item *schema.Address) (*models.Address, error)
 	UpdateAddress(ctx context.Context, uuid string, items *schema.Address) (*models.Address, error)
 }
@@ -22,7 +22,7 @@ func NewAddressService(repo repositories.AddressRepository) IAddressSerivce {
 	return &addressRepo{repo: repo}
 }
 
-func (w *addressRepo) GetAddressByUserID(ctx context.Context, uuid string) (*models.Address, error) {
+func (w *addressRepo) GetAddressByUserID(ctx context.Context, uuid string) (*[]models.Address, error) {
 	warehouse, err := w.repo.GetAddressByUserID(uuid)
 	if err != nil {
 		return nil, err

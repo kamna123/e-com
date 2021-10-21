@@ -240,13 +240,11 @@ var doc = `{
                 "summary": "Get get category by code",
                 "parameters": [
                     {
-                        "description": "The body to get categories",
-                        "name": "Body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/schema.CategoryQueryParam"
-                        }
+                        "type": "string",
+                        "description": "Category code",
+                        "name": "code",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -257,6 +255,39 @@ var doc = `{
                             "items": {
                                 "$ref": "#/definitions/schema.Category"
                             }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Post create category",
+                "parameters": [
+                    {
+                        "description": "The body to create a category",
+                        "name": "Body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/schema.Category"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/schema.Category"
                         }
                     }
                 }
@@ -515,7 +546,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/schema.ProductBodyParam"
+                            "$ref": "#/definitions/schema.Product"
                         }
                     }
                 ],
@@ -523,10 +554,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/schema.Product"
-                            }
+                            "$ref": "#/definitions/schema.Product"
                         }
                     }
                 }
@@ -887,17 +915,6 @@ var doc = `{
                 }
             }
         },
-        "schema.CategoryQueryParam": {
-            "type": "object",
-            "properties": {
-                "active": {
-                    "type": "boolean"
-                },
-                "code": {
-                    "type": "string"
-                }
-            }
-        },
         "schema.Login": {
             "type": "object",
             "required": [
@@ -1013,15 +1030,23 @@ var doc = `{
                     "type": "string"
                 },
                 "description": {
+                    "description": "brand",
                     "type": "string"
                 },
                 "name": {
+                    "description": "title",
                     "type": "string"
                 },
                 "price": {
                     "type": "integer"
                 },
+                "thumbnail_path": {
+                    "type": "string"
+                },
                 "uuid": {
+                    "type": "string"
+                },
+                "video_path": {
                     "type": "string"
                 }
             }

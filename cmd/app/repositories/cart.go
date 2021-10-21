@@ -14,7 +14,7 @@ import (
 type ICartRepository interface {
 	AddToCart(query *schema.CartBody) (*models.Cart, error)
 	GetCart(uuid string) (*[]models.Cart, error)
-	DeleteFromCart(query *schema.CartDeleteBody) (*models.Cart, error)
+	UpdateFromCart(query *schema.CartDeleteBody) (*models.Cart, error)
 }
 
 type cartRepo struct {
@@ -38,17 +38,20 @@ func (r *cartRepo) AddToCart(item *schema.CartBody) (*models.Cart, error) {
 
 func (r *cartRepo) GetCart(uuid string) (*[]models.Cart, error) {
 	var cart []models.Cart
-	if r.db.Where("userid = ?", uuid).Find(&cart).RecordNotFound() {
+	if r.db.Where("user_id = ?", uuid).Find(&cart).RecordNotFound() {
 		return nil, errors.New("not found cart")
 	}
 
 	return &cart, nil
 }
 
-func (r *cartRepo) DeleteFromCart(query *schema.CartDeleteBody) (*models.Cart, error) {
+func (r *cartRepo) UpdateFromCart(query *schema.CartDeleteBody) (*models.Cart, error) {
 	var product models.Cart
-	if r.db.Model(&product).Where("userid = ? and product_uuid = ? ", query.UserID, query.ProductID).
-		Update("quantity_uuid", query.Quantity).RecordNotFound() {
+	if r.db.Where("user_id = ? and product_uuid = ?", query.UserID, query.ProductUUID).Find(&product).RecordNotFound() {
+		return nil, errors.New("not found cart")
+	}
+	if r.db.Model(&product).Where("user_id = ? and product_uuid = ? ", query.UserID, query.ProductUUID).
+		Update("quantity", query.Quantity).RecordNotFound() {
 		return nil, errors.New("not found product")
 	}
 
