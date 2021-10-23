@@ -46,7 +46,7 @@ func (u *User) Login(c *gin.Context) {
 	ctx := c.Request.Context()
 	user, token, err := u.service.Login(ctx, &item)
 	if err != nil {
-		log.Fatal(err.Error())
+		///log.Fatal(err.Error())
 		c.JSON(http.StatusBadRequest, utils.PrepareResponse(nil, err.Error(), ""))
 		return
 	}
