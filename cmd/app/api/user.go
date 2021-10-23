@@ -74,11 +74,11 @@ func (u *User) Register(c *gin.Context) {
 		return
 	}
 
-	valid := u.validate(item)
-	if !valid {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Request body is invalid"})
-		return
-	}
+	// valid := u.validate(item)
+	// if !valid {
+	// 	c.JSON(http.StatusBadRequest, gin.H{"error": "Request body is invalid"})
+	// 	return
+	// }
 
 	ctx := c.Request.Context()
 	user, token, err := u.service.Register(ctx, &item)
