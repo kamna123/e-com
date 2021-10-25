@@ -30,7 +30,7 @@ func (r *categRepo) GetCategories(query *schema.CategoryQueryParam) (*[]models.C
 	var categories []models.Category
 	var mapQuery map[string]interface{}
 	utils.Copy(&mapQuery, query)
-	if r.db.Where(mapQuery).Find(&categories).RecordNotFound() {
+	if r.db.Find(&categories).RecordNotFound() {
 		return nil, nil
 	}
 
