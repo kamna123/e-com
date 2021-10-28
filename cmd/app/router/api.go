@@ -12,13 +12,7 @@ import (
 )
 
 func RegisterAPI(r *gin.Engine, container *dig.Container) error {
-	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"https://foo.com"},
-		AllowMethods:     []string{"PUT", "PATCH"},
-		AllowHeaders:     []string{"Origin"},
-		ExposeHeaders:    []string{"Content-Length"},
-		AllowCredentials: true,
-	}))
+	r.Use(cors.Default())
 	err := container.Invoke(func(
 		user *api.User,
 		category *api.Category,
