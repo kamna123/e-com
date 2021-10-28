@@ -5,11 +5,20 @@ import (
 
 	"log"
 
+	"github.com/gin-contrib/cors"
+
 	"github.com/gin-gonic/gin"
 	"go.uber.org/dig"
 )
 
 func RegisterAPI(r *gin.Engine, container *dig.Container) error {
+	r.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"https://foo.com"},
+		AllowMethods:     []string{"PUT", "PATCH"},
+		AllowHeaders:     []string{"Origin"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+	}))
 	err := container.Invoke(func(
 		user *api.User,
 		category *api.Category,
